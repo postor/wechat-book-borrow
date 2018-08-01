@@ -8,6 +8,7 @@
 
 namespace common\models;
 
+use yii\base\Exception;
 
 class BorrowOperation
 {
@@ -17,10 +18,10 @@ class BorrowOperation
     const OPERATION_NONE = 'none';
 
     public static $OPERATION_TITLE_MAP = [
-        self::OPERATION_BORROW=>'借阅',
-        self::OPERATION_REBORROW=>'续借',
-        self::OPERATION_RETURN=>'归还',
-        self::OPERATION_NONE=>'',
+        self::OPERATION_BORROW => '借阅',
+        self::OPERATION_REBORROW => '续借',
+        self::OPERATION_RETURN => '归还',
+        self::OPERATION_NONE => '',
     ];
 
     public $message = '';
@@ -54,13 +55,13 @@ class BorrowOperation
             }
 
             //连续借2次
-            if($count == 2 && $borrows[0]->wxuser_id == $user->id && $borrows[1]->wxuser_id == $user->id){
+            if ($count == 2 && $borrows[0]->wxuser_id == $user->id && $borrows[1]->wxuser_id == $user->id) {
                 return new BorrowOperation(self::OPERATION_NONE, '无法续借，已经连续借阅此书2次');
             }
 
             //连续借1次
-            if($count >=1){
-                if($borrows[0]->wxuser_id == $user->id){
+            if ($count >= 1) {
+                if ($borrows[0]->wxuser_id == $user->id) {
                     return new BorrowOperation(self::OPERATION_REBORROW, '用户扫码续借');
                 }
             }
@@ -84,23 +85,33 @@ class BorrowOperation
         return new BorrowOperation(self::OPERATION_NONE, '您已经连续借此书2次，不能再续借此书了');
     }
 
-    public static function performOperation($operation,$bookId,$wxuserId,$openId){
+    public static function performOperation($operation, $bookId, $wxuserId, $openId)
+    {
         $user = WxUser::findOne(['id' => $wxuserId]);
         $book = Book::findOne(['id' => $bookId]);
 
-        if ($openId != $user->uuid) {
-            throw new HttpException(502, 'openid:' . $openId . ' operating as openid:' . $user->uuid . '!');
+        if (!$user) {
+            throw new Exception('用户[ID:' . $wxuserId . ']没找到!');
         }
-        $newOpt = self::getOperation($user,$book);
+
+        if (!$book) {
+            throw new Exception('图书[ID:' . $bookId . ']没找到!');
+        }
+
+        if ($openId != $user->uuid) {
+            throw new Exception('用户[openid:' . $openId . ']尝试假扮' . $user->uuid . '!');
+        }
+
+        $newOpt = self::getOperation($user, $book);
         if ($newOpt->operation != $operation) {
-            throw new HttpException(502, 'operation:' . $operation . ' is out of date, new operation:' . $newOpt);
+            throw new Exception('操作[' . $operation . ']已经过期，新的可用操作:' . $newOpt->operation);
         }
 
         switch ($operation) {
             case self::OPERATION_BORROW:
             case self::OPERATION_REBORROW:
-                $borrow = $book->getBorrows()->orderBy('borrow_time desc')->one();
-                if($borrow){
+                $borrow = $book->currentBorrow;
+                if ($borrow) {
                     $borrow->return_time = date('Y-m-d H:i:s');
                     $borrow->save(false);
                 }
@@ -118,13 +129,14 @@ class BorrowOperation
                 $book->save(false);
                 break;
             default:
-                throw new HttpException(502, 'operation:' . $operation . ' is not a valid operation');
+                throw new Exception('操作[' . $operation . ']不是一个有效的操作');
         }
         return $newOpt;
     }
 
-    public static function canReborrow($user,$book){
-        $operation = self::getOperation($user,$book);
+    public static function canReborrow($user, $book)
+    {
+        $operation = self::getOperation($user, $book);
         return $operation->operation == self::OPERATION_REBORROW;
     }
 }

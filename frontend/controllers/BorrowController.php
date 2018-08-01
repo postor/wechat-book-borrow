@@ -26,12 +26,14 @@ class BorrowController extends \yii\web\Controller
                 $request = \Yii::$app->request;
                 if ($request->isPost) {
                     $data = $request->post();
-                    $operation = BorrowOperation::performOperation($data['operation'], $data['user_id'], $data['book_id'], $openId);
-                    return $this->render('message',['message'=>"[$operation->title]操作成功！"]);
+                    $operation = BorrowOperation::performOperation($data['operation'], $data['book_id'], $data['user_id'], $openId);
+                    return $this->render('message', ['message' => "[$operation->title]操作成功！"]);
                 }
                 return $this->renderIndex($openId, $id);
             }
-            return 'checkOauth2AccessToken 失败';
+            $session->remove(self::WX_OPENID_SESSION_NAME);
+            $session->remove(self::WX_TOKEN_SESSION_NAME);
+            return 'checkOauth2AccessToken 失败，已清理缓存请重试！';
         }
 
         if ($code && $state) {
@@ -41,7 +43,7 @@ class BorrowController extends \yii\web\Controller
                 $session->set(self::WX_TOKEN_SESSION_NAME, $result['access_token']);
                 return $this->renderIndex($result['openid'], $state);
             }
-            return $this->render('message',['message'=>'授权失败']);
+            return $this->render('message', ['message' => '授权失败']);
         }
 
         $url = $wechat->getOauth2AuthorizeUrl(Url::to(['/borrow'], true), $id);

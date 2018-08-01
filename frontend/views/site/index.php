@@ -21,5 +21,11 @@ $this->title = 'My Yii Application';
     <p>
         其他：后台可设置管理员，管理员扫码表示图书归还
     </p>
+    <p>
+        其他：所有用户需关注公众号后方可使用扫码功能
+    </p>
+    <p>
+        <img src="/images/gongzhonghao.jpg" />
+    </p>
 
 </div>
