@@ -1,19 +1,25 @@
 <?php
 
 use yii\helpers\Html;
+
 /* @var $this yii\web\View */
 
 $this->title = 'My Yii Application';
 ?>
 <div class="site-index">
-<h1>site/index</h1>
+    <h1>扫码借书示例程序</h1>
 
-<p>
-    谁都可以打开这个页面，这并不稀奇    
-</p>
-<p>
-但是只有你的用户名包含“test”，你才能打开 
-<?= Html::a('test/index', ['test/index']) ?>
-</p>
+    <p>
+        1.到后台添加图书并打印图书二维码
+    </p>
+    <p>
+        2.将二维码贴到对应的图书上
+    </p>
+    <p>
+        3.扫码借阅图书
+    </p>
+    <p>
+        其他：后台可设置管理员，管理员扫码表示图书归还
+    </p>
 
 </div>

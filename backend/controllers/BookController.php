@@ -8,6 +8,7 @@ use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\data\Pagination;
 
 /**
  * BookController implements the CRUD actions for Book model.
@@ -24,11 +25,6 @@ class BookController extends Controller
                 'class' => 'yii\filters\AccessControl',
                 'rules' => [
                     [
-                        'actions' => ['login', 'error'],
-                        'allow' => true,
-                    ],
-                    [
-                        'actions' => ['logout', 'index'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -137,5 +133,25 @@ class BookController extends Controller
         }
 
         throw new NotFoundHttpException('The requested page does not exist.');
+    }
+
+    public function actionPrintqr()
+    {
+        $query = Book::find();
+        // 得到文章的总数（但是还没有从数据库取数据）
+        $count = $query->count();
+
+        // 使用总数来创建一个分页对象
+        $pagination = new Pagination(['totalCount' => $count]);
+
+        // 使用分页对象来填充 limit 子句并取得文章数据
+        $books = $query->offset($pagination->offset)
+            ->limit($pagination->limit)
+            ->all();
+
+        return $this->renderPartial('printqr', [
+            'books' => $books,
+            'pagination' => $pagination,
+        ]);
     }
 }
