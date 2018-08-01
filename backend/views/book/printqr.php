@@ -18,7 +18,7 @@ $engine = new \StringTemplate\Engine;
         <?php foreach ($books as $book):
             $url = $engine->render(\Yii::$app->params['qrCodeUrlTemplate'], $book->id); ?>
             <div style="float: left;width: 40mm; padding: 5mm;">
-                <img src="<?= Url::to(['/qr', ['id' => $book->id]]) ?>" style="width: 100%"/>
+                <img src="<?= Url::to(['/qr', 'id' => $book->id]) ?>" style="width: 100%"/>
                 <p><?= $book->name ?></p>
             </div>
         <?php endforeach; ?>
