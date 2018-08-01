@@ -27,6 +27,10 @@ $this->title = 'My Yii Application';
                 <h2>微信用户管理</h2>
                 <p><?= Html::a('增删改查', ['/wxuser']) ?>.</p>
             </div>
+            <div class="col-lg-4">
+                <h2>借阅记录管理</h2>
+                <p><?= Html::a('增删改查', ['/borrow']) ?>.</p>
+            </div>
         </div>
 
     </div>

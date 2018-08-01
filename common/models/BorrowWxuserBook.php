@@ -45,13 +45,17 @@ class BorrowWxuserBook extends \yii\db\ActiveRecord
             'id' => 'ID',
             'wxuser_id' => 'Wxuser ID',
             'book_id' => 'Book ID',
-            'borrow_time' => 'Borrow Time',
-            'return_time' => 'Return Time',
+            'borrow_time' => '借阅时间',
+            'return_time' => '归还时间',
         ];
     }
 
     public function getUser(){
         return $this->hasOne(WxUser::className(),['id'=>'wxuser_id']);
+    }
+
+    public function getBook(){
+        return $this->hasOne(Book::className(),['id'=>'book_id']);
     }
 
     public function getDueReturnTime(){

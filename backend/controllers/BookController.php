@@ -2,6 +2,7 @@
 
 namespace backend\controllers;
 
+use common\models\BorrowWxuserBook;
 use Yii;
 use common\models\Book;
 use yii\data\ActiveDataProvider;
@@ -46,7 +47,8 @@ class BookController extends Controller
     public function actionIndex()
     {
         $dataProvider = new ActiveDataProvider([
-            'query' => Book::find(),
+            'query' => Book::find()
+                ->joinWith('currentBorrow'),
         ]);
 
         return $this->render('index', [

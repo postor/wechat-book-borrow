@@ -40,9 +40,9 @@ class WxUser extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'uuid' => 'Uuid',
-            'name' => 'Name',
-            'is_admin' => 'Is Admin',
+            'uuid' => 'OpenID',
+            'name' => '姓名',
+            'is_admin' => '管理员',
         ];
     }
 

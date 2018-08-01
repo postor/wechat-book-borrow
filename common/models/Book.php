@@ -42,7 +42,7 @@ class Book extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'name' => 'Name',
+            'name' => '书名',
             'image' => 'Image',
             'add_time' => 'Add Time',
             'borrowed' => 'Borrowed',
