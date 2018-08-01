@@ -15,7 +15,7 @@ $data = [
     'exception'=>$exception,
 ];
 
-if($exception->statusCode == 403){    
+if(isset($exception->statusCode) && $exception->statusCode== 403){
      echo $this->render('error/403',$data);
      return;
 }
