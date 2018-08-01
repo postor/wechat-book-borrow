@@ -14,11 +14,11 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'image')->textInput(['maxlength' => true]) ?>
+    <?php //$form->field($model, 'image')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'add_time')->textInput() ?>
+    <?php // $form->field($model, 'add_time')->textInput() ?>
 
-    <?= $form->field($model, 'borrowed')->textInput() ?>
+    <?php // $form->field($model, 'borrowed')->textInput() ?>
 
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
