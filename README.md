@@ -17,7 +17,7 @@ cd xxx
 ./init
 ```
 
-### 准备好mysql数据库，填好配置
+### 准备好mysql数据库，微信公众号后台，填好配置
 
 `common/config/main-local.php`
 
@@ -44,6 +44,25 @@ return [
 ];
 ```
 
+`frontend/config/main-local.php`
+
+```
+$config = [
+    'components' => [
+        'request' => [
+            // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
+            'cookieValidationKey' => 'wCeGjv-08gZPemwROGk5fnAq-eDV9nu6',
+        ],
+        'wechat' => [
+            'class' => 'callmez\wechat\sdk\Wechat',
+            'appId' => 'wx2506434984b44fa7',
+            'appSecret' => '093dc1f822d6cb241a00f6455cf8f987',
+            'token' => 'VwNgMZEO7M6mw9Bn'
+        ],
+    ],
+];
+```
+
 ### 初始化数据库
 
 ```
@@ -52,66 +71,29 @@ return [
 
 ### 启动服务并体验
 
-```
-./yii serve --docroot="frontend/web/"
-```
-
-## 核心代码解释
-
-`frontend/controllers/TestController`
 
 ```
-<?php
-namespace frontend\controllers;
-use yii\filters\AccessControl;
-use Yii;
+./yii serve --docroot="frontend/web/" 0.0.0.0 --port=80
+```
 
-class TestController extends \yii\web\Controller
-{
-    //使用behaviors，权限控制只是behavior的一种，了解更多：http://www.digpage.com/behavior.html
-    public function behaviors()
-    {
-        return [
-            'access' => [
-                //使用AccessControl类来管理权限，了解更多：https://www.yiiframework.com/doc/api/2.0/yii-filters-accesscontrol
-                'class' => AccessControl::className(),
-                'rules' => [                    
-                    [
-                        //规则这里只指定了allow，没有指定action，默认为应用所有action， 了解更多：https://www.yiiframework.com/doc/api/2.0/yii-filters-accessrule
-                        'allow' => true,
+前端服务供微信扫码，所以必须手机能访问，`0.0.0.0`表示绑定所有ip
 
-                        //使用一个回调来决定是否应用此规则，了解更多：https://www.yiiframework.com/doc/api/2.0/yii-filters-accessrule#$matchCallback-detail
-                        'matchCallback' => function ($rule, $action) {
-                            //登录才能访问
-                            if(Yii::$app->user->isGuest){
-                                return false;
-                            }                            
-                            
-                            //只有用户名包含test的用户才能访问
-                            $user = Yii::$app->user->getIdentity();
-                            if(strpos($user->username,'test')>=0){
-                                
-                                //nottesting不允许包含testing的用户访问
-                                if($action->id =='nottesting' && strpos($user->username,'testing')>=0){
-                                    return false;
-                                }  
+注意修改微信后台的网页服务安全域名，`--port=80`是因为其他端口微信会报错
 
-                                return true;
-                            }                              
-                        },
-                    ],
-                ],
-            ],
-        ];
-    }
-    public function actionIndex()
-    {
-        return $this->render('index');
-    }    
-    public function actionNottesting()
-    {
-        return $this->render('nottesting');
-    }
-}
+```
+./yii serve --docroot="backend/web/"
+```
+
+后台服务为数据管理，账号系统使用yii2-advanced模板提供的，在前端服务中注册，后台登录后进行表管理
+
+如需关闭注册服务可通过修改参数配置
+
+
+`frontend/config/params-local.php`
+
+```
+return [
+    'enableRegister' => false,
+];
 
 ```
