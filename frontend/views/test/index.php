@@ -9,6 +9,7 @@ $this->registerAssetBundle(yii\web\JqueryAsset::className(), yii\web\View::POS_H
 <button id="upload">上传图片</button>
 <script src="http://res.wx.qq.com/open/js/jweixin-1.4.0.js"></script>
 <script>
+    window.onerror=(err)=>alert(JSON.stringify(err))
     wx.config(<?=  Json::encode(\Yii::$app->wechat->jsApiConfig([],true))?>);
     $(document).ready(function(){
         $('#upload').click(function () {
@@ -20,12 +21,12 @@ $this->registerAssetBundle(yii\web\JqueryAsset::className(), yii\web\View::POS_H
                     Promise.all(localIds.map((localId)=>{
                         return uploadLocalId(localId).then((serverId)=>{
                             return serverLoadMedia(serverId).then((obj)=>{
-                                console.log(obj)
+                                alert(JSON.stringify(obj))
                                 return obj
                             })
                         })
                     })).then(()=>{
-                        console.log('all done!')
+                        alert('all done!')
                     })
 
                 }
