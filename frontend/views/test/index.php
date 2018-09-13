@@ -53,6 +53,7 @@ $this->registerAssetBundle(yii\web\JqueryAsset::className(), yii\web\View::POS_H
 
     function serverLoadMedia(serverId) {
         alert('/?r=test/media&id=' + serverId)
+        $('h1').text('/?r=test/media&id=' + serverId)
         return new Promise((resolve, reject) => {
             $.getJSON('/?r=test/media&id=' + serverId).done(function (obj) {
                 alert(JSON.stringify(obj))
