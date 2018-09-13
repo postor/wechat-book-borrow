@@ -37,11 +37,12 @@ $this->registerAssetBundle(yii\web\JqueryAsset::className(), yii\web\View::POS_H
     function uploadLocalId(localId){
         return new Promise((resolve,reject)=>{
             wx.uploadImage({
-                localId: localIds[i], // 需要上传的图片的本地ID，由chooseImage接口获得
+                localId: localId, // 需要上传的图片的本地ID，由chooseImage接口获得
                 isShowProgressTips: 1, // 默认为1，显示进度提示
                 success: function (res) {
                     var serverId = res.serverId; // 返回图片的服务器端ID
-                    //alert('上传成功：'+serverId
+                    alert('上传成功：'+serverId)
+                    resolve(serverId)
                 }
             });
         })
