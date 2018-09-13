@@ -7,17 +7,21 @@
  */
 
 namespace common\actions;
+
 use Da\QrCode\QrCode;
 use yii\web\Response;
 
 class QrCodeAction extends \yii\base\Action
 {
-    public function run($id=0) {
+    public function run($url = '', $id = 0)
+    {
         $engine = new \StringTemplate\Engine;
-        $url = $engine->render(\Yii::$app->params['qrCodeUrlTemplate'], $id);
+        if(!$url){
+            $url = $engine->render(\Yii::$app->params['qrCodeUrlTemplate'], $id);
+        }
         $qrCode = (new QrCode($url))
-            ->setSize(250)
-            ->setMargin(5);
+            ->setSize(100)
+            ->setMargin(0);
 
         $response = \Yii::$app->response;
         $response->headers->set('Content-Type', $qrCode->getContentType());
