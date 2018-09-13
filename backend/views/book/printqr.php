@@ -19,7 +19,7 @@ $engine = new \StringTemplate\Engine;
         <?php foreach ($books as $book):
             $url = $engine->render(\Yii::$app->params['qrCodeUrlTemplate'], $book->id); ?>
             <div style="float: left;width: 315px; padding: 5px; text-align: center; page-break-inside: avoid;">
-                <div><?= $book->name ?></div>
+                <div style="overflow: hidden;text-overflow: ellipsis;white-space: nowrap;"><?= $book->name ?></div>
                 <div style="width: 105px; float:left;">
                     <img src="<?= Url::to(['/qr', 'url' => $gongzhonghaoUrl,]) ?>" style="width: 100px;"/>
                     <div>关注</div>
