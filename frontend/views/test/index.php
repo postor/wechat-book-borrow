@@ -27,6 +27,8 @@ $this->registerAssetBundle(yii\web\JqueryAsset::className(), yii\web\View::POS_H
                         })
                     })).then(() => {
                         alert('all done!')
+                    }).catch((err)=>{
+                        alert(JSON.stringify(err))
                     })
 
                 }
@@ -50,11 +52,13 @@ $this->registerAssetBundle(yii\web\JqueryAsset::className(), yii\web\View::POS_H
     }
 
     function serverLoadMedia(serverId) {
+        alert('/?r=test/media&id=' + serverId)
         return new Promise((resolve, reject) => {
             $.getJSON('/?r=test/media&id=' + serverId).done(function (obj) {
-                console.log(err)
+                alert(JSON.stringify(obj))
                 resolve(obj)
             }).fail(function (err) {
+                alert(JSON.stringify(err))
                 reject(err)
             })
         })
