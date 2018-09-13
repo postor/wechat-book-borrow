@@ -7,6 +7,7 @@ $this->registerAssetBundle(yii\web\JqueryAsset::className(), yii\web\View::POS_H
 ?>
 <h1>test/index</h1>
 <button id="upload">上传图片</button>
+<div id="uploaded"></div>
 <script src="http://res.wx.qq.com/open/js/jweixin-1.4.0.js"></script>
 <script>
     window.onerror = (err) => alert(JSON.stringify(err))
@@ -21,13 +22,15 @@ $this->registerAssetBundle(yii\web\JqueryAsset::className(), yii\web\View::POS_H
                     Promise.all(localIds.map((localId) => {
                         return uploadLocalId(localId).then((serverId) => {
                             return serverLoadMedia(serverId).then((obj) => {
-                                alert(JSON.stringify(obj))
+                                //alert(JSON.stringify(obj))
+                                $('#uploaded').append('<img src="' + obj.url + '">')
                                 return obj
                             })
                         })
-                    })).then(() => {
-                        alert('all done!')
-                    }).catch((err)=>{
+                    })).then((results) => {
+                        alert('all done!' + JSON.stringify(results))
+
+                    }).catch((err) => {
                         alert(JSON.stringify(err))
                     })
 
@@ -43,7 +46,7 @@ $this->registerAssetBundle(yii\web\JqueryAsset::className(), yii\web\View::POS_H
                 isShowProgressTips: 1, // 默认为1，显示进度提示
                 success: function (res) {
                     var serverId = res.serverId; // 返回图片的服务器端ID
-                    alert('上传成功：' + serverId)
+                    //alert('上传成功：' + serverId)
                     resolve(serverId)
                 },
                 fail: (err) => reject(err)
@@ -52,14 +55,14 @@ $this->registerAssetBundle(yii\web\JqueryAsset::className(), yii\web\View::POS_H
     }
 
     function serverLoadMedia(serverId) {
-        alert('/?r=test/media&id=' + serverId)
-        $('h1').text('/?r=test/media&id=' + serverId)
+        //alert('/?r=test/media&id=' + serverId)
+        //$('h1').text('/?r=test/media&id=' + serverId)
         return new Promise((resolve, reject) => {
             $.getJSON('/?r=test/media&id=' + serverId).done(function (obj) {
-                alert(JSON.stringify(obj))
+                //alert(JSON.stringify(obj))
                 resolve(obj)
             }).fail(function (err) {
-                alert(JSON.stringify(err))
+                //alert(JSON.stringify(err))
                 reject(err)
             })
         })
