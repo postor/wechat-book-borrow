@@ -2,8 +2,9 @@
 
 namespace frontend\controllers;
 
-use yii\filters\AccessControl;
+use yii\web\Response;
 use Yii;
+
 
 class TestController extends \yii\web\Controller
 {
@@ -13,7 +14,17 @@ class TestController extends \yii\web\Controller
         return $this->render('index');
     }
 
-    
+
+    public function actionMedia($id)
+    {
+        Yii::$app->response->format = Response::FORMAT_JSON;
+        $media = Yii::$app->wechat->getMedia($id);
+        return [
+            'error' => 0,
+            'media' => $media,
+        ];
+    }
+
     public function actionNottesting()
     {
         return $this->render('nottesting');
