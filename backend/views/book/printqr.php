@@ -36,6 +36,3 @@ $engine = new \StringTemplate\Engine;
             </div>
         <?php endforeach; ?>
     </div>
-<?= LinkPager::widget([
-    'pagination' => $pagination,
-]) ?>
