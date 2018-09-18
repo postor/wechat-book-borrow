@@ -43,7 +43,7 @@ class BorrowController extends \yii\web\Controller
                 $session->set(self::WX_TOKEN_SESSION_NAME, $result['access_token']);
                 return $this->renderIndex($result['openid'], $state);
             }
-            return $this->render('message', ['message' => '授权失败']);
+            return $this->render('message', ['message' => '授权失败，请重试！']);
         }
 
         $url = $wechat->getOauth2AuthorizeUrl(Url::to(['/borrow'], true), $id);
