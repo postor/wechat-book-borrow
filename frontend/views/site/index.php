@@ -28,6 +28,7 @@ $gongzhonghaoUrl = 'http://weixin.qq.com/r/zkxqcnLEOy9ErTYR9xnc';
         关注公众号<br/>
         <img src="<?= Url::to(['/qr', 'url' => $gongzhonghaoUrl,]) ?>" />
     </p>
+    <br/><br/><br/><br/><br/><br/>
     <p>
         图书借阅情况列表<br/>
         <img src="<?= Url::to(['/qr', 'url' => \Yii::$app->params['borrowListUrl'],]) ?>" />
