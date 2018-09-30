@@ -20,19 +20,7 @@ $engine = new \StringTemplate\Engine;
             $url = $engine->render(\Yii::$app->params['qrCodeUrlTemplate'], $book->id); ?>
             <div style="float: left;width: 315px; padding: 5px; text-align: center; page-break-inside: avoid;">
                 <div style="overflow: hidden;text-overflow: ellipsis;white-space: nowrap;"><?= $book->name ?></div>
-                <div style="width: 105px; float:left;">
-                    <img src="<?= Url::to(['/qr', 'url' => $gongzhonghaoUrl,]) ?>" style="width: 100px;"/>
-                    <div>关注</div>
-                </div>
-                <div style="width: 105px; float:left;">
-                    <img src="<?= Url::to(['/qr', 'id' => $book->id]) ?>" style="width: 100px;"/>
-                    <div>借还</div>
-                </div>
-                <div style="width: 105px; float:left;">
-                    <img src="<?= Url::to(['/qr', 'url' => \Yii::$app->params['borrowListUrl'],]) ?>"
-                         style="width: 100px;"/>
-                    <div>查询</div>
-                </div>
+                <img src="<?= Url::to(['/qr', 'id' => $book->id]) ?>" style="width: 100px;"/>
             </div>
         <?php endforeach; ?>
     </div>
